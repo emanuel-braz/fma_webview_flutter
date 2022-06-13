@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flutter Micro Web</title>
+    </head>
+
+    <body>
+        <script src="./flutter_micro_app.js"></script>
+        
+        <script>
+
+            FMAWebviewFlutter.listen("flutter_js",function(event) {
+                alert(event);
+            });
+
+            var androidPayload =  JSON.stringify({
+                name: 'js_to_android',
+                payload: "There is no connection to the server",
+                distinct: true,
+                channels: ['conn_status_on'],
+                version: '1.0.0',
+                datetime: '2020-01-01T00:00:00.000Z'
+            });
+
+            var flutterPayload =  JSON.stringify({
+                name: 'js_to_flutter',
+                payload: { status: "on", message: "There is connection to the server"},
+                distinct: true,
+                channels: ['conn_status_off'],
+                version: '1.0.0',
+                datetime: '2020-01-01T00:00:00.000Z'
+            });
+
+            var flutterPayloadString =  JSON.stringify({
+                name: 'js_to_flutter',
+                payload: 'event from js',
+                distinct: true,
+                channels: ['js_string'],
+                version: '1.0.0',
+                datetime: '2020-01-01T00:00:00.000Z'
+            });
+        </script>
+
+        <h2 style="padding: 4px;">Send event to Flutter</h2>
+        <button style="display: block; padding: 4px; margin: 8px 16px;" onclick="FMAWebviewFlutter.emitFlutterMicroAppEvent(flutterPayload)">[JS -> Flutter] connection is online</button>
+        <button style="display: block; padding: 4px; margin: 8px 16px;" onclick="FMAWebviewFlutter.emitFlutterMicroAppEvent(flutterPayloadString)">[JS -> Flutter] String Event</button>
+        <button style="display: block; padding: 4px; margin: 8px 16px;" onclick="FMAWebviewFlutter.emitFlutterMicroAppEvent(androidPayload)">[JS -> Android] connection is offline</button>
+    </body>
+</html>
+
