@@ -1,3 +1,4 @@
+
 class MicroAppEvent {
     name = "";
     payload;
@@ -31,37 +32,37 @@ MicroAppEventControllerDelegate = {
 
 class MicroAppEventController {
 
-    emitFlutterMicroAppEvent(payload) {
-        FlutterMicroAppEvent.postMessage(payload);
+    emit(microAppEventJson) {
+        FlutterMicroAppEvent.postMessage(microAppEventJson);
     }
     
-    onFlutterMicroAppEvent(event) {
+    onFlutterMicroAppEvent(microAppEventJson) {
 
-        var microAppEvent = MicroAppEvent.fromJson(event);
+        var microAppEvent = MicroAppEvent.fromJson(microAppEventJson);
         var channels = microAppEvent.channels;
 
         if (channels != null && channels.length > 0) {
             channels.forEach(channel => {
-                this.emitInternal(channel, event);
+                this.emitInternal(channel, microAppEvent);
             });
         }
 
-        return MicroAppEventController.handleFlutterMicroAppEvent(event);
+        return MicroAppEventController.handleFlutterMicroAppEvent(microAppEvent);
     }
 
     listen(channel, callback) {
         return MicroAppEventControllerDelegate.listen(channel, callback);
     }
 
-    emitInternal(channel, payload) {
-        MicroAppEventControllerDelegate.emit(channel, payload);
+    emitInternal(channel, microAppEvent) {
+        return MicroAppEventControllerDelegate.emit(channel, microAppEvent);
     }
 
     // This is the method that will be called by the Flutter app
-    // and will be used to return an empty String to the Flutter app
+    // and will be used to return a null value as default, to the Flutter app
     // You should overwrite it, if you need to do something else
     static handleFlutterMicroAppEvent(microAppEvent) {
-        return '';
+        return null;
     }
 }
-const FMAWebviewFlutter = new MicroAppEventController();
+const FlutterMicroApp = new MicroAppEventController();

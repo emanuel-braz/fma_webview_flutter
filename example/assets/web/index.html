@@ -12,42 +12,53 @@
         
         <script>
 
-            FMAWebviewFlutter.listen("flutter_js",function(event) {
-                alert(event);
+            // This is the method that will be called by the Flutter app
+            // and will be used to return a value to the Flutter app
+            // You should overwrite it, in order to respond the event with some value
+            // MicroAppEventController.handleFlutterMicroAppEvent = (microAppEvent) => {
+            //     return `************** ${microAppEvent.payload} received on JS ***************`
+            // }
+
+            FlutterMicroApp.listen("flutter_js", function(microAppEvent) {
+                alert(microAppEvent.payload);
             });
 
-            var androidPayload =  JSON.stringify({
-                name: 'js_to_android',
-                payload: "There is no connection to the server",
-                distinct: true,
-                channels: ['conn_status_on'],
-                version: '1.0.0',
-                datetime: '2020-01-01T00:00:00.000Z'
+            FlutterMicroApp.listen("response_battery_level", function(microAppEvent) {
+                alert("Battery level is " + microAppEvent.payload + "%")
             });
 
-            var flutterPayload =  JSON.stringify({
+            var eventToFlutterSnackbar =  JSON.stringify({
                 name: 'js_to_flutter',
-                payload: { status: "on", message: "There is connection to the server"},
+                payload: { status: "on", message: "Flutter says: Hello from JS"},
                 distinct: true,
                 channels: ['conn_status_off'],
                 version: '1.0.0',
                 datetime: '2020-01-01T00:00:00.000Z'
             });
 
-            var flutterPayloadString =  JSON.stringify({
-                name: 'js_to_flutter',
-                payload: 'event from js',
+            var eventToAndroidToast =  JSON.stringify({
+                name: 'js_to_android',
+                payload: "Android says: Hello from JS",
                 distinct: true,
-                channels: ['js_string'],
+                channels: ['conn_status_on'],
                 version: '1.0.0',
+                datetime: '2020-01-01T00:00:00.000Z'
+            });
+            
+            var requestBatteryLevelEvent =  JSON.stringify({
+                name: 'request_battery_level',
                 datetime: '2020-01-01T00:00:00.000Z'
             });
         </script>
 
-        <h2 style="padding: 4px;">Send event to Flutter</h2>
-        <button style="display: block; padding: 4px; margin: 8px 16px;" onclick="FMAWebviewFlutter.emitFlutterMicroAppEvent(flutterPayload)">[JS -> Flutter] connection is online</button>
-        <button style="display: block; padding: 4px; margin: 8px 16px;" onclick="FMAWebviewFlutter.emitFlutterMicroAppEvent(flutterPayloadString)">[JS -> Flutter] String Event</button>
-        <button style="display: block; padding: 4px; margin: 8px 16px;" onclick="FMAWebviewFlutter.emitFlutterMicroAppEvent(androidPayload)">[JS -> Android] connection is offline</button>
+        <p style="margin: 0px 16px; padding: 4px;">Send event from JS to Flutter</p>
+        <button style="display: block; padding: 4px; margin: 0px 16px 16px; width: 90%;" onclick="FlutterMicroApp.emit(eventToFlutterSnackbar)">[JS -> Flutter] Show snackbar on Flutter</button>
+
+        <p style="margin: 0px 16px; padding: 4px;">Send event from JS to Android(Native)</p>
+        <button style="display: block; padding: 4px; margin: 0px 16px 16px; width: 90%;" onclick="FlutterMicroApp.emit(eventToAndroidToast)">[JS -> Android] Show toast on Android</button>
+
+        <p style="margin: 0px 16px; padding: 4px;">Send event from JS to Android(Native) and receive the data back on JS</p>
+        <button style="display: block; padding: 4px; margin: 0px 16px 16px; width: 90%;" onclick="FlutterMicroApp.emit(requestBatteryLevelEvent)">[JS -> Android -> JS] Request battery level</button>
     </body>
 </html>
 

@@ -1,5 +1,6 @@
+// ignore_for_file: unused_element
+
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,78 +12,52 @@ class SimpleWebview extends StatefulWidget {
   const SimpleWebview({Key? key}) : super(key: key);
 
   @override
-  _SimpleWebviewState createState() => _SimpleWebviewState();
+  State<SimpleWebview> createState() => _SimpleWebviewState();
 }
 
 class _SimpleWebviewState extends State<SimpleWebview>
-    with HandlerRegisterMixin {
+    with WebviewRegisterControllerMixin {
   late WebViewController _controller;
-  final _webviewFlutterMicroEventController =
-      WebviewFlutterMicroEventController();
-
-  @override
-  void initState() {
-    super.initState();
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
-  }
-
-  @override
-  List<MicroAppEventHandler> get eventHandlers => [
-        MicroAppEventHandler<Map<String, dynamic>?>(
-          (event) {
-            final map = event.cast();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-                map?['message'],
-              ),
-            ));
-          },
-          channels: const ['conn_status_off'],
-          distinct: false,
-        ),
-        MicroAppEventHandler<String?>(
-          (event) {
-            String? message = event.cast();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(message ?? 'unknown'),
-            ));
-          },
-          distinct: false,
-        ),
-      ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Flutter Micro Web Demo"),
+        title: const Text('Flutter Micro Web'),
       ),
       body: WebView(
-          initialUrl: "about:blank",
-          onWebViewCreated: (WebViewController controller) {
-            _controller = controller;
-            _webviewFlutterMicroEventController.setController(controller);
-            // _loadLocalHtmlFile();
-            _loadRemoteApp();
-          },
-          onPageFinished: (String url) {
-            // print('Page finished loading: $url');
-          },
-          javascriptMode: JavascriptMode.unrestricted,
-          javascriptChannels: <JavascriptChannel>{
-            _webviewFlutterMicroEventController.channel
-          }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final event = MicroAppEvent(
-            name: 'from_js',
-            channels: const ['flutter_js', 'multi-channel'],
-            payload: const {"status": "online"},
-          );
-          _webviewFlutterMicroEventController.emit(event.toJson());
+        initialUrl: "about:blank",
+        onWebViewCreated: (WebViewController controller) {
+          _controller = controller;
+
+          // this should be registered once
+          //! IMPORTANT: Register the controller
+          registerWebviewController(controller);
+
+          _loadLocalHtmlFile();
+          // _loadRemoteApp();
         },
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.green,
+        onPageFinished: (String url) {
+          // print('Page finished loading: $url');
+        },
+        javascriptMode: JavascriptMode.unrestricted,
+
+        //! IMPORTANT: Set the channel
+        javascriptChannels: <JavascriptChannel>{microWebviewController.channel},
+      ),
+      floatingActionButton: ElevatedButton(
+        onPressed: () async {
+          final event = MicroAppEvent(
+            name: 'from_flutter',
+            channels: const ['flutter_js', 'multi-channel'],
+            payload: "JS says: Hello from Flutter",
+          );
+          final result =
+              await MicroAppEventController().emit(event).getFirstResult();
+          // ignore: avoid_print
+          print(result);
+        },
+        child: const Text('Send event to JS'),
       ),
     );
   }
@@ -95,6 +70,10 @@ class _SimpleWebviewState extends State<SimpleWebview>
   }
 
   _loadRemoteApp() async {
-    _controller.loadUrl("http://192.168.0.28:8080");
+    _controller.loadUrl("http://...");
+  }
+
+  _loadLocalHttpServer() async {
+    _controller.loadUrl("http://localhost:8080");
   }
 }

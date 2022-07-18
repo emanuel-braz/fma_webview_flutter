@@ -1,11 +1,10 @@
 import 'package:flutter_micro_app/dependencies.dart';
 import 'package:flutter_micro_app/flutter_micro_app.dart';
+import 'package:fma_webview_flutter/src/utils/consts/constants.dart' as consts;
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewFlutterMicroEventController
     extends GenericMicroAppEventController {
-  static const String jsMethodChannel = 'FlutterMicroAppEvent';
-
   WebViewController? _controller;
   WebViewController? get controller => _controller;
   bool get hasController => _controller != null;
@@ -17,9 +16,15 @@ class WebviewFlutterMicroEventController
     _controller = controller;
   }
 
-  WebviewFlutterMicroEventController() : super(methodChannel: jsMethodChannel) {
+  @override
+  void dispose() {
+    _controller = null;
+  }
+
+  WebviewFlutterMicroEventController()
+      : super(methodChannel: Constants.flutterMicroAppEvent) {
     _channel = JavascriptChannel(
-        name: jsMethodChannel,
+        name: Constants.flutterMicroAppEvent,
         onMessageReceived: (JavascriptMessage event) {
           onEvent(parseMicroEvent(event));
         });
@@ -27,9 +32,9 @@ class WebviewFlutterMicroEventController
 
   @override
   Future<Object?> emit(Object event, {Duration? timeout}) async {
-    if (controller == null) return null;
-    final future = controller!.runJavascriptReturningResult(
-        "FMAWebviewFlutter.onFlutterMicroAppEvent('$event');");
+    if (_controller == null) return null;
+    final future = _controller!.runJavascriptReturningResult(
+        "${consts.Constants.onFlutterMicroAppEvent}('$event');");
     if (timeout != null) return future.timeout(timeout);
     return future;
   }
