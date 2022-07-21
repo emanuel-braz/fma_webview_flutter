@@ -32,7 +32,11 @@ class _SimpleWebviewState extends State<SimpleWebview>
 
           // this should be registered once
           //! IMPORTANT: Register the controller
-          registerWebviewController(controller);
+          registerWebviewController(
+            controller,
+            name: 'Micro Webview Name',
+            description: 'Dispatch event to/from webview',
+          );
 
           _loadLocalHtmlFile();
           // _loadRemoteApp();

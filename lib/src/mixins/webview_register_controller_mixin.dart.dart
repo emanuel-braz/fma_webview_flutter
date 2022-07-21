@@ -17,7 +17,8 @@ mixin WebviewRegisterControllerMixin<T extends StatefulWidget> on State<T> {
       _microWebviewController;
   String? controllerId;
 
-  registerWebviewController(WebViewController webViewController) {
+  registerWebviewController(WebViewController webViewController,
+      {String? name, String? description}) {
     if (controllerId != null) {
       throw Exception(
           'It is not allowed to register more than one controller for the same widget');
@@ -26,6 +27,10 @@ mixin WebviewRegisterControllerMixin<T extends StatefulWidget> on State<T> {
     controllerId = '${_microWebviewController.hashCode ^ hashCode}';
 
     _microWebviewController.setController(webViewController);
+    _microWebviewController.name = name;
+    _microWebviewController.description = description;
+    _microWebviewController.parentName = widget.runtimeType.toString();
+
     MicroAppEventController().registerWebviewController(
       id: controllerId!,
       controller: _microWebviewController,
