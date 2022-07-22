@@ -6,6 +6,8 @@ import '../../fma_webview_flutter.dart';
 
 mixin WebviewRegisterControllerMixin<T extends StatefulWidget> on State<T> {
   late WebviewFlutterMicroEventController _microWebviewController;
+  WebViewController? get webviewController =>
+      _microWebviewController.controller;
 
   @override
   initState() {

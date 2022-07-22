@@ -17,8 +17,6 @@ class SimpleWebview extends StatefulWidget {
 
 class _SimpleWebviewState extends State<SimpleWebview>
     with WebviewRegisterControllerMixin {
-  late WebViewController _controller;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +26,6 @@ class _SimpleWebviewState extends State<SimpleWebview>
       body: WebView(
         initialUrl: "about:blank",
         onWebViewCreated: (WebViewController controller) {
-          _controller = controller;
-
           // this should be registered once
           //! IMPORTANT: Register the controller
           registerWebviewController(
@@ -68,16 +64,16 @@ class _SimpleWebviewState extends State<SimpleWebview>
 
   _loadLocalHtmlFile() async {
     String fileText = await rootBundle.loadString('assets/web/index.html');
-    _controller.loadUrl(Uri.dataFromString(fileText,
+    webviewController?.loadUrl(Uri.dataFromString(fileText,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
   }
 
   _loadRemoteApp() async {
-    _controller.loadUrl("http://...");
+    webviewController?.loadUrl("http://...");
   }
 
   _loadLocalHttpServer() async {
-    _controller.loadUrl("http://localhost:8080");
+    webviewController?.loadUrl("http://localhost:8080");
   }
 }
