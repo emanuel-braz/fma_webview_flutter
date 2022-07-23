@@ -59,6 +59,7 @@ FlutterMicroApp.listen("response_battery_level", function(microAppEvent) {
     alert("Battery level is " + microAppEvent.payload + "%")
 });
 ```
+<img src="https://user-images.githubusercontent.com/3827308/180587584-e1b4cea3-c92d-45b6-91bc-dbb5e1e74487.png" width="250" />
 
 #### (Optional) If you intended to return a result from Javascript to flutter or native, please override this function
 >This is the method that will be called by the Flutter app
