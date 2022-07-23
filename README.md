@@ -1,4 +1,4 @@
-### [fma_webview_flutter](https://pub.dev/packages/fma_webview_flutter) enables the web applications, a bilateral comunication to Flutter code (Dart) or Native code (Kotlin / Swift) using the package [flutter_micro_app](https://pub.dev/packages/flutter_micro_app) and [webview_flutter](https://pub.dev/packages/webview_flutter).
+### [fma_webview_flutter](https://pub.dev/packages/fma_webview_flutter) enables the web applications, a bilateral communication to Flutter code (Dart) or Native code (Kotlin / Swift) using the package [flutter_micro_app](https://pub.dev/packages/flutter_micro_app) and [webview_flutter](https://pub.dev/packages/webview_flutter).
 
 >This package is intended to be used with the [flutter_micro_app](https://pub.dev/packages/flutter_micro_app) package. Please read about the micro events from flutter_micro_app package doc.
 #### Use the `WebviewRegisterControllerMixin` mixin in order to get the method `registerWebviewController` and get the webview controller `webviewController`.
