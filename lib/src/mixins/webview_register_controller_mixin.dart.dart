@@ -6,6 +6,8 @@ import '../../fma_webview_flutter.dart';
 
 mixin WebviewRegisterControllerMixin<T extends StatefulWidget> on State<T> {
   late WebviewFlutterMicroEventController _microWebviewController;
+
+  /// webview controller
   WebViewController? get webviewController =>
       _microWebviewController.controller;
 
@@ -15,10 +17,13 @@ mixin WebviewRegisterControllerMixin<T extends StatefulWidget> on State<T> {
     super.initState();
   }
 
+  /// get the [WebviewFlutterMicroEventController]
   WebviewFlutterMicroEventController get microWebviewController =>
       _microWebviewController;
   String? controllerId;
 
+  /// Register the webview controller
+  /// It is not allowed to register more than one controller for the same widget
   registerWebviewController(WebViewController webViewController,
       {String? name, String? description}) {
     if (controllerId != null) {

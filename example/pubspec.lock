@@ -86,10 +86,10 @@ packages:
   flutter_micro_app:
     dependency: "direct main"
     description:
-      path: "../../flutter_micro_app"
-      relative: true
-    source: path
-    version: "0.8.0"
+      name: flutter_micro_app
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -101,7 +101,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   lints:
     dependency: transitive
     description:

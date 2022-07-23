@@ -32,8 +32,7 @@ dependencies:
   webview_flutter: ^3.0.4
   fma_webview_flutter:
     path: ../
-  flutter_micro_app:
-    path: ../../flutter_micro_app
+  flutter_micro_app: 0.10.0
 
 
   # The following adds the Cupertino Icons font to your application.

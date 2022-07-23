@@ -62,6 +62,7 @@ class _SimpleWebviewState extends State<SimpleWebview>
     );
   }
 
+  // Known issue: the javascript is not being loaded from local file, inject it manually or load a remote app
   _loadLocalHtmlFile() async {
     String fileText = await rootBundle.loadString('assets/web/index.html');
     webviewController?.loadUrl(Uri.dataFromString(fileText,
@@ -70,7 +71,7 @@ class _SimpleWebviewState extends State<SimpleWebview>
   }
 
   _loadRemoteApp() async {
-    webviewController?.loadUrl("http://...");
+    webviewController?.loadUrl("http://dartside.org/fmawebview");
   }
 
   _loadLocalHttpServer() async {

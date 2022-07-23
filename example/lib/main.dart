@@ -1,14 +1,15 @@
 import 'dart:io';
 
-import 'package:example/src/simple_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_micro_app/flutter_micro_app.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'src/simple_webview.dart';
+
 void main() {
-  MicroAppPreferences.update(MicroAppConfig(
-    nativeEventsEnabled: Platform.isAndroid,
-  ));
+  MicroAppPreferences.update(
+    MicroAppConfig(nativeEventsEnabled: Platform.isAndroid),
+  );
 
   runApp(MyApp());
 }
@@ -19,7 +20,7 @@ class MyApp extends MicroHostStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Micro App Demo',
+      title: 'Flutter Micro Web Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

@@ -6,16 +6,22 @@ import 'package:webview_flutter/webview_flutter.dart';
 class WebviewFlutterMicroEventController
     extends GenericMicroAppEventController {
   WebViewController? _controller;
+
+  /// the webview controller
   WebViewController? get controller => _controller;
   bool get hasController => _controller != null;
 
   late JavascriptChannel _channel;
+
+  /// the javascript channel
   JavascriptChannel get channel => _channel;
 
+  /// set the webview controller
   void setController(WebViewController controller) {
     _controller = controller;
   }
 
+  /// dispose controller
   @override
   void dispose() {
     _controller = null;
@@ -30,6 +36,7 @@ class WebviewFlutterMicroEventController
         });
   }
 
+  /// send event to javascript
   @override
   Future<Object?> emit(Object event, {Duration? timeout}) async {
     if (_controller == null) return null;
@@ -39,6 +46,7 @@ class WebviewFlutterMicroEventController
     return future;
   }
 
+  /// parse events
   MicroAppEvent? parseMicroEvent(JavascriptMessage event) {
     try {
       MicroAppEvent? microEvent = MicroAppEvent.fromJson(event.message);
